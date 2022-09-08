@@ -39,7 +39,7 @@ class CreatePIN extends StatelessWidget {
           lazy: false,
           create: (_) => CreatePINBloc(pinRepository: HivePINRepository()),
           child: BlocListener<CreatePINBloc, CreatePINState>(
-            listener: (context, state) {
+            listener: (context, state) { // use this context
               if (state.pinStatus == PINStatus.equals) {
                 showDialog(
                     context: context,
@@ -60,7 +60,7 @@ class CreatePIN extends StatelessWidget {
               } else if (state.pinStatus == PINStatus.unequals) {
                 showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
+                    builder: (ctx) => AlertDialog( // change this to ctx
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
@@ -68,9 +68,10 @@ class CreatePIN extends StatelessWidget {
                           actionsAlignment: MainAxisAlignment.center,
                           actions: [
                             TextButton(
-                              onPressed: () =>
-                                  BlocProvider.of<CreatePINBloc>(context)
-                                      .add(const CreateNullPINEvent()),
+                              onPressed: () {
+                                BlocProvider.of<CreatePinBloc>(context).add(const CreateNullPinEvent()); // use the context up in the listener
+                                Navigator.of(context).pop();
+                              },
                               child: const Text(ok),
                             )
                           ],
